@@ -49,6 +49,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
+  .state('app.camera', {
+    url: '/camera',
+    views: {
+      'mainContainer': {
+        templateUrl: 'templates/camera.html',
+        controller: 'cameraController'
+      }
+    }
+  })
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/main');
 

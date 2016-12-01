@@ -9,15 +9,13 @@
       </ion-nav-buttons>
     </ion-nav-bar>
     <ion-nav-view name="mainContainer"></ion-nav-view>
-    <ion-content class="has-footer">
-    </ion-content>
-    <ion-footer-bar class="bar-dark bar-footer footer-buttons">
+    <ion-footer-bar class="bar-dark bar-footer footer-buttons" ng-hide="!hasFooter">
       <div class="row">
         <div class="col">
             <button class="button button-balanced button-clear button-icon icon-radar-off icon-radar-fix footer-button-color" ng-click="radarShow()"></button>
         </div>
         <div class="col">
-            <button class="button button-balanced button-clear button-icon ion-ios-camera-outline footer-button-color"></button>
+            <button class="button button-balanced button-clear button-icon ion-ios-camera-outline footer-button-color" ng-click="showCamera()"></button>
         </div>
         <div class="col">
             <button class="button button-balanced button-clear button-icon ion-ios-chatboxes-outline footer-button-color"></button>

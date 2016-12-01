@@ -99,3 +99,36 @@
 .radar-table-spacer {
   width: 1em;
 }
+
+/*Camera*/
+.camera-preview {
+  width: 100%;
+  height: 90%;
+  background-color: black;
+}
+
+/*test cameraplus*/
+.button-capture {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 0;
+  width: 90px;
+  border: none;
+}
+
+.dangerLevel {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  right: 0px;
+  width: 450px;
+  bottom: 550px;
+  -webkit-transform-origin: 100% 100%;
+  -ms-transform: rotate(-90deg); /* IE 9 */
+  -webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
+  transform: rotate(-90deg);
+}
