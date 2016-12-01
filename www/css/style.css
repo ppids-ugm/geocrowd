@@ -1,0 +1,101 @@
+/* Empty. Add your own CSS if you like */
+/*Header*/
+.login-icon-fix::before {
+  font-size: 1.25em !important;
+}
+
+.button-login {
+  border: 0em;
+}
+.bar-dark .title, .bar-dark .button-icon::before {
+  color: #f57f17 !important;
+}
+
+/*Footer*/
+.icon-radar-fix::before {
+  font-size: 1.45em !important;
+  font-weight: bold !important;
+}
+
+.bar-footer.footer-buttons {
+  padding: 0em;
+}
+
+.bar-footer.footer-buttons .row {
+  padding: 0em;
+}
+
+.bar-footer.footer-buttons .row .col {
+  text-align: center;
+}
+
+.footer-button-color {
+  color: #f57f17 !important;
+}
+
+
+/*Login Modal*/
+.login-modal {
+  background-color: #212121;
+}
+
+.top-dekor {
+  height: 0.4em;
+  background-color: #f57f17;
+}
+
+.button-close-login {
+  background-color: #f57f17;
+  color: white !important;
+  width: 3em;
+  height: 3em;
+  border-radius: 0;
+  float: right;
+}
+
+.login-logo {
+  width: 60%;
+  margin: auto;
+  margin-top: 5em;
+  margin-bottom: 5em;
+  display: block;
+}
+
+.input-account-container {
+  background-color: transparent;
+}
+
+.button-login-conf {
+  border-radius: 0;
+  background-color: #f57f17;
+  color: white !important;
+  float: right;
+  margin-top: 0.5em;
+  width: 7em;
+}
+
+/*Radar modal*/
+.modal.bottom-sheet {
+  bottom: 0;
+  min-height: initial;
+  top: initial;
+  height: 50%;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.button-close-radar::before {
+  font-size: 1em !important;
+}
+
+.icon-report::before {
+  color: orange;
+}
+
+.radar-table-label {
+  width: 8em;
+}
+
+.radar-table-spacer {
+  width: 1em;
+}
