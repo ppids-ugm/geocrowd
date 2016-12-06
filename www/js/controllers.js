@@ -2,12 +2,22 @@ angular.module('starter.controllers', [])
 .controller('mainController', function(
   $scope,
   $rootScope,
-  $ionicHistory
+  $ionicHistory,
+  $cordovaNetwork,
+  positionService,
+  $ionicPlatform,
+  $ionicLoading,
+  $ionicPopup,
+  networkService,
+  radarService
 ) {
+  // Misc Function
   $scope.$on('$ionicView.beforeEnter', function() {
     $rootScope.hasFooter = true;
     $ionicHistory.clearHistory()
   });
+
+  // Map definition
   angular.extend($scope, {
     defaults: {
       zoomControl: false
@@ -22,13 +32,88 @@ angular.module('starter.controllers', [])
       type: 'xyz'
     }
   })
+
+  // GPS Error Notif
+  $scope.showGPSError = function(err) {
+     var confirmPopup = $ionicPopup.confirm({
+       title: 'GPS Error',
+       template: 'Failed to lock coordinates. GPS error message : ' + err.message +'<br/> Try Again?'
+     });
+
+     confirmPopup.then(function(res) {
+       if(res) {
+          positionService.getPosition(gpsSuccess, gpsFailed)
+       } else {
+         ionic.Platform.exitApp()
+       }
+     });
+   };
+
+  //  GPS Failed
+  var gpsFailed = function(err) {
+    $ionicLoading.hide()
+    $scope.showGPSError(err)
+  }
+
+  //  GPS success
+  var gpsSuccess = function(position) {
+    $ionicLoading.hide()
+    angular.extend($scope, {
+      center: {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+        zoom: 10
+      },
+      markers: {
+        myPosition: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          }
+      }
+    })
+  }
+
+  // Disconnected Notif
+  $scope.showDisconnected = function() {
+     var alertPopup = $ionicPopup.alert({
+       title: 'No Internet Connection',
+       template: 'No Internet Connection. You can still send a report using this application via SMS (without picture)'
+     });
+   };
+
+  // Connected to internet
+  var isOnline = function() {
+
+  }
+
+  // Disconnected from internet
+  var isOffline = function() {
+    $scope.showDisconnected()
+  }
+
+  // Main
+  $ionicPlatform.ready(function() {
+    $ionicLoading.show({
+      template: 'Locking GPS Position...'
+    }).then(function(){
+      positionService.getPosition(gpsSuccess, gpsFailed)
+    }).then(function() {
+      networkService.getOnlineStatus(isOnline, isOffline)
+    })
+  })
+
+  // Radar event listener
+  // $scope.$on('radar:opened', function() {
+  //    radarService.createBuffer()
+  //  });
 })
 
 .controller('menuController', function(
   $scope,
   $state,
   $ionicModal,
-  $rootScope
+  $rootScope,
+  $ionicPlatform
 ) {
   // Login modal
   $ionicModal.fromTemplateUrl('/templates/login.html', {
@@ -51,6 +136,7 @@ angular.module('starter.controllers', [])
   $scope.radarShow = function() {
     $rootScope.hasFooter = false;
     $rootScope.stateRadar = true;
+    $rootScope.$broadcast('radar:opened');
   }
 
   // Reporting modal
@@ -76,32 +162,33 @@ angular.module('starter.controllers', [])
   }
 })
 
+.controller('radarController', function(
+) {
+})
+
 .controller('settingController', function() {
 
 })
 
 .controller('reportController', function(
   $scope,
-  $ionicPlatform
+  $ionicPlatform,
+  $cordovaCamera
 ) {
   // navigate to camera view
   $scope.showCamera = function() {
-    var options = {
-        quality: 50,
-        destinationType: Camera.DestinationType.FILE_URI,
-        // In this app, dynamically set the picture source, Camera or photo gallery
-        sourceType: Camera.PictureSourceType.CAMERA,
-        encodingType: Camera.EncodingType.JPEG,
-        mediaType: Camera.MediaType.PICTURE,
-        allowEdit: true,
-        correctOrientation: true  //Corrects Android orientation quirks
-    }
-    $ionicPlatform.ready(function() {
-      navigator.camera.getPicture(function cameraSuccess(imageUri) {
-        console.log('success')
-      }, function cameraError(error) {
-          console.debug("Unable to obtain picture: " + error, "app");
-      }, options);
-    })
+      $ionicPlatform.ready(function () {
+        var options = {
+          destinationType: Camera.DestinationType.FILE_URI,
+          sourceType: Camera.PictureSourceType.CAMERA,
+        };
+        $cordovaCamera.getPicture(options).then(function(imageURI) {
+          var image = document.getElementById('myImage');
+          image.src = imageURI;
+        }, function(err) {
+          // error
+        });
+        $cordovaCamera.cleanup()
+      }, false);
   }
 })

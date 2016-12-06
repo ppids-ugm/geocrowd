@@ -10,10 +10,13 @@ angular.module('starter', [
   'starter.controllers',
   'starter.services',
   'starter.directives',
-  'leaflet-directive'
+  'leaflet-directive',
+  'ngCordova'
 ])
 
-.run(function($ionicPlatform) {
+.run(function(
+  $ionicPlatform
+) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
