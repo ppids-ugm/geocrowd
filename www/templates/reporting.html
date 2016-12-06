@@ -1,0 +1,25 @@
+<ion-modal-view>
+  <ion-header-bar class="bar-dark">
+    <h1 class="title">Report</h1>
+    <button class="button button-icon ion-close button-close-radar" ng-click="reportHide()"></button>
+  </ion-header-bar>
+  <ion-content scroll="false" padding="true" class="has-header" ng-controller="reportController">
+    <div>
+      <img src="img/panic.PNG" style="display: block; width: auto; height: auto; margin-left: auto; margin-right: auto;">
+    </div>
+    <div class="list report-list list-inset">
+      <label class="item item-input" id="pelaporan-input6">
+        <span class="input-label">Incident</span>
+        <input type="text" placeholder="Hint Text">
+      </label>
+      <ion-item class="range range-dark" id="pelaporan-range1">Severity
+        <input type="range" min="0" max="100">
+      </ion-item>
+      <ion-item class="item-icon-left" id="pelaporan-list-item35" ng-click="showCamera()">
+        <i class="icon ion-android-camera"></i>Take Picture
+      </ion-item>
+      <ion-checkbox class="checkbox checkbox-dark" class="pelaporan-checkbox1">Send using sms</ion-checkbox>
+      <button class="button-login-conf button button-dark">Report</button>
+    </div>
+  </ion-content>
+</ion-modal-view>

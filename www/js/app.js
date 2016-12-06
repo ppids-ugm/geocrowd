@@ -5,7 +5,13 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.directives', 'leaflet-directive'])
+angular.module('starter', [
+  'ionic',
+  'starter.controllers',
+  'starter.services',
+  'starter.directives',
+  'leaflet-directive'
+])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -49,15 +55,33 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
-  .state('app.camera', {
-    url: '/camera',
+  // .state('app.camera', {
+  //   url: '/camera',
+  //   views: {
+  //     'mainContainer': {
+  //       templateUrl: 'templates/camera.html',
+  //       controller: 'cameraController'
+  //     }
+  //   }
+  // })
+  .state('app.setting', {
+    url: '/setting',
     views: {
       'mainContainer': {
-        templateUrl: 'templates/camera.html',
-        controller: 'cameraController'
+        templateUrl: 'templates/setting.html',
+        controller: 'settingController'
       }
     }
   })
+  // .state('app.report', {
+  //   url: '/report',
+  //   views: {
+  //     'mainContainer': {
+  //       templateUrl: 'templates/reporting.html',
+  //       controller: 'reportController'
+  //     }
+  //   }
+  // })
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/main');
 

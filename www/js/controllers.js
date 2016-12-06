@@ -1,30 +1,34 @@
 angular.module('starter.controllers', [])
 .controller('mainController', function(
   $scope,
-  $rootScope
+  $rootScope,
+  $ionicHistory
 ) {
-  $rootScope.hasFooter = true;
+  $scope.$on('$ionicView.beforeEnter', function() {
+    $rootScope.hasFooter = true;
+    $ionicHistory.clearHistory()
+  });
   angular.extend($scope, {
     defaults: {
-      tileLayerOptions: {
-        opacity: 0.9,
-        detectRetina: true,
-        reuseTiles: true,
-      },
       zoomControl: false
+    },
+    center: {
+      lat: -7,
+      lng: 110,
+      zoom: 8
+    },
+    tiles: {
+      url: 'https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2FtZW92ZXIiLCJhIjoicWFLdlBoYyJ9.EmU-s7wtfdTpVAX0SegFaw',
+      type: 'xyz'
     }
   })
-  $scope.center = {
-    lat: -7,
-    lng: 110,
-    zoom: 8
-  }
 })
 
 .controller('menuController', function(
   $scope,
   $state,
-  $ionicModal
+  $ionicModal,
+  $rootScope
 ) {
   // Login modal
   $ionicModal.fromTemplateUrl('/templates/login.html', {
@@ -44,92 +48,60 @@ angular.module('starter.controllers', [])
   });
 
   // Radar modal
-  $ionicModal.fromTemplateUrl('/templates/radar.html', {
+  $scope.radarShow = function() {
+    $rootScope.hasFooter = false;
+    $rootScope.stateRadar = true;
+  }
+
+  // Reporting modal
+  $ionicModal.fromTemplateUrl('/templates/reporting.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
-    $scope.modalRadar = modal;
+    $scope.modalReport = modal;
   });
-  $scope.radarShow = function() {
-    $scope.modalRadar.show();
+  $scope.reportShow = function() {
+    $scope.modalReport.show();
   };
-  $scope.radarHide = function() {
-    $scope.modalRadar.hide();
+  $scope.reportHide = function() {
+    $scope.modalReport.hide();
   };
   $scope.$on('$destroy', function() {
-    $scope.modalRadar.remove();
+    $scope.modalReport.remove();
   });
 
-  // navigate to camera view
-  $scope.showCamera = function() {
-    $state.go('app.camera')
+  // navigate to setting view
+  $scope.showSetting = function() {
+    $state.go('app.setting')
   }
 })
 
-.controller('cameraController', function(
-  $rootScope,
+.controller('settingController', function() {
+
+})
+
+.controller('reportController', function(
   $scope,
-  $ionicPlatform,
-  $http
+  $ionicPlatform
 ) {
-  $rootScope.hasFooter = false;
-  $scope.verticalSlider = {
-    value: 0,
-    options: {
-      floor: 0,
-      ceil: 10,
-      vertical: true
+  // navigate to camera view
+  $scope.showCamera = function() {
+    var options = {
+        quality: 50,
+        destinationType: Camera.DestinationType.FILE_URI,
+        // In this app, dynamically set the picture source, Camera or photo gallery
+        sourceType: Camera.PictureSourceType.CAMERA,
+        encodingType: Camera.EncodingType.JPEG,
+        mediaType: Camera.MediaType.PICTURE,
+        allowEdit: true,
+        correctOrientation: true  //Corrects Android orientation quirks
     }
-  };
-
-  $ionicPlatform.ready(function() {
-    cordova.plugins.CameraServer.startServer({
-        'www_root' : '/',
-        'port' : 8080,
-        'localhost_only' : false,
-        'json_info': []
-    }, function( url ){
-        // if server is up, it will return the url of http://<server ip>:port/
-        // the ip is the active network connection
-        // if no wifi or no cell, "127.0.0.1" will be returned.
-        console.log('CameraServer Started @ ' + url);
-    }, function( error ){
-        console.log('CameraServer Start failed: ' + error);
-    });
-
-    cordova.plugins.CameraServer.startCamera(function(){
-        console.log('Capture Started');
-    },function( error ){
-        console.log('CameraServer StartCapture failed: ' + error);
-    });
-
-    var localImg = 'http://localhost:8080/live.jpg';
-
-    reqursive = function() {
-      $http({
-        method: 'GET',
-        url: localImg,
-        responseType: 'arraybuffer'
-      }).then(function(response) {
-        var str = _arrayBufferToBase64(response.data);
-        $scope.imgDat =str;
-        reqursive()
-        // str is base64 encoded.
-      }, function(response) {
-        console.error('error in getting static img.');
-      });
-    }
-
-    reqursive()
-
-    function _arrayBufferToBase64(buffer) {
-      var binary = '';
-      var bytes = new Uint8Array(buffer);
-      var len = bytes.byteLength;
-      for (var i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i]);
-      }
-      return window.btoa(binary);
-    }
-  })
+    $ionicPlatform.ready(function() {
+      navigator.camera.getPicture(function cameraSuccess(imageUri) {
+        console.log('success')
+      }, function cameraError(error) {
+          console.debug("Unable to obtain picture: " + error, "app");
+      }, options);
+    })
+  }
 })
