@@ -9,7 +9,8 @@ angular.module('starter.controllers', [])
   $ionicLoading,
   $ionicPopup,
   networkService,
-  radarService
+  radarService,
+  mapService
 ) {
   // Misc Function
   $scope.$on('$ionicView.beforeEnter', function() {
@@ -18,15 +19,18 @@ angular.module('starter.controllers', [])
   });
 
   // Map definition
+  var markers = mapService.getMarkers()
   angular.extend($scope, {
     defaults: {
       zoomControl: false
     },
     center: {
-      lat: -7,
-      lng: 110,
+      lat: 0,
+      lng: 0,
       zoom: 8
     },
+    markers: markers,
+    geojson: {},
     tiles: {
       url: 'https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2FtZW92ZXIiLCJhIjoicWFLdlBoYyJ9.EmU-s7wtfdTpVAX0SegFaw',
       type: 'xyz'
@@ -58,17 +62,18 @@ angular.module('starter.controllers', [])
   //  GPS success
   var gpsSuccess = function(position) {
     $ionicLoading.hide()
-    angular.extend($scope, {
+    console.log(position.coords.latitude, position.coords.longitude)
+    angular.merge($scope, {
       center: {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
-        zoom: 10
+        zoom: 8
       },
       markers: {
-        myPosition: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          }
+        myPos: {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }
       }
     })
   }
@@ -103,9 +108,25 @@ angular.module('starter.controllers', [])
   })
 
   // Radar event listener
-  // $scope.$on('radar:opened', function() {
-  //    radarService.createBuffer()
-  //  });
+  $scope.$on('radar:opened', function() {
+    var pos = $scope.markers.myPos
+    var bufferJson = radarService.createBuffer(pos, 10)
+    angular.extend($scope, {
+      geojson: {
+        data: bufferJson,
+        style: {
+          fillColor: "green",
+          weight: 2,
+          opacity: 1,
+          color: 'white',
+          dashArray: '3',
+          fillOpacity: 1
+        }
+      }
+    })
+    var pointInside = radarService.getPointWithin($scope.markers, bufferJson)
+    console.log(pointInside)
+  });
 })
 
 .controller('menuController', function(

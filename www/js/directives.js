@@ -26,6 +26,7 @@ angular.module('starter.directives', [])
           $scope.radarHide = function() {
             $rootScope.stateRadar = false;
             $rootScope.hasFooter = true;
+            $rootScope.$broadcast('radar:closed');
           }
         },
         templateUrl: '/templates/radar-modal.html',
@@ -37,7 +38,7 @@ angular.module('starter.directives', [])
           element.css('min-height','initial');
           element.css('top','initial');
           element.css('height','50%');
-          element.css('overflow-y','scroll');
+          element.css('overflow-y','auto');
         }
     }
 })

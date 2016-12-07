@@ -16,6 +16,35 @@ angular.module('starter.services', [])
   }
   return instance
 })
+.factory('mapService', function() {
+  var sampleMarker = {
+    outside: {
+      lat: -7.9752864,
+      lng: 110.4320685,
+      options: {
+        'reportType' : 'hotspot',
+        'Level of danger' : 'Imminent',
+        'Updated' : '6 hours ago'
+      }
+    },
+    inside: {
+      lat: -7.8852864,
+      lng: 110.3420685,
+      options: {
+        'ReportType' : 'user',
+        'Source' : 'Twitter',
+        'Status' : '#gambutapi terdeteksi pada...',
+        'Level of danger' : 'Imminent',
+        'Updated' : '1 hours ago'
+      }
+    }
+  }
+  return {
+    getMarkers: function() {
+      return sampleMarker
+    }
+  }
+})
 .factory('networkService', function(
   $ionicPlatform,
   $cordovaNetwork,
@@ -75,10 +104,47 @@ angular.module('starter.services', [])
 })
 
 .factory('radarService', function() {
+  // create buffer
   var generateBuffer = function(source, distance) {
     var unit = 'kilometers'
     var buffered = turf.buffer(source, distance, unit);
     return buffered
+  }
+
+  // create feature collection geojson
+  var createFeatureCollection = function(feature) {
+    var featureCollection = {}
+    featureCollection.type = 'FeatureCollection'
+    featureCollection.features = [feature]
+    return featureCollection
+  }
+
+  // extract feature from feature collection
+  var getFeature = function(features) {
+    return features.features[0]
+  }
+
+  // check is there any marker inside buffer
+  var pointWithin = function(markers, buffer) {
+    var result = []
+    var poly = getFeature(buffer)
+    for(key in markers) {
+      if(key != 'myPos') {
+        var coord = getCoord(markers[key])
+        var point = createPoint(coord)
+        if(turf.inside(point, poly)) {
+          result.push(key)
+        }
+      }
+    }
+    return result
+  }
+
+  // extract coordinate from marker
+  var getCoord = function(marker) {
+    var lat = marker.lat
+    var lng = marker.lng
+    return {lng:lng, lat:lat}
   }
 
   var createPoint = function(coord) {
@@ -87,7 +153,7 @@ angular.module('starter.services', [])
       "properties": {},
       "geometry": {
         "type": "Point",
-        "coordinates": [coord.lat, coord.lng]
+        "coordinates": [coord.lng, coord.lat]
       }
     }
     return pt
@@ -95,8 +161,12 @@ angular.module('starter.services', [])
   return {
     createBuffer: function(coord, distance) {
       var source = createPoint(coord)
-      var result = generateBuffer(source, distance)
+      var buffered = generateBuffer(source, distance)
+      var result = createFeatureCollection(buffered)
       return result
+    },
+    getPointWithin: function(markers, buffer) {
+      return pointWithin(markers, buffer)
     }
   }
 })
