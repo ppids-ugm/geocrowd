@@ -3,12 +3,32 @@
     <leaflet
       lf-center="center"
       tiles="tiles"
-      height="100%"
+      height={{height}}
       width="100%"
       markers="markers"
       geojson="geojson"
       defaults="defaults">
     </leaflet>
-    <report-modal show='stateRadar'></report-modal>
+    <div class="radar-modal-container" ng-show="stateRadar">
+      <ion-header-bar class="bar-dark radar-header">
+        <h1 class="title">Hotspot & Report Radar</h1>
+        <button class="button button-icon ion-close button-close-radar" ng-click="radarHide()"></button>
+      </ion-header-bar>
+      <div class="list hotspot-list has-header">
+        <a class="item item-icon-left" href="#" ng-repeat="pointInside in pointsInside">
+          <span ng-class="{'icon icon-report' : (pointInside['ReportType'] == 'user') ? true: false, 'icon icon-fire': (pointInside['ReportType'] == 'hotspot') ? true: false}"></span>
+          <table>
+            <tr>
+              <td colspan="3"><b>{{pointInside.id}}</b></td>
+            </tr>
+            <tr ng-repeat="(key, val) in pointInside" ng-if="key != 'id'">
+              <td class="radar-table-label">{{key}}</td>
+              <td class="radar-table-spacer">:</td>
+              <td class="radar-table-value">{{val}}</td>
+            </tr>
+          </table>
+        </a>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

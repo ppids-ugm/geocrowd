@@ -18,7 +18,7 @@ angular.module('starter.services', [])
 })
 .factory('mapService', function() {
   var sampleMarker = {
-    outside: {
+    outside1: {
       lat: -7.9752864,
       lng: 110.4320685,
       options: {
@@ -27,7 +27,7 @@ angular.module('starter.services', [])
         'Updated' : '6 hours ago'
       }
     },
-    inside: {
+    outside2: {
       lat: -7.8852864,
       lng: 110.3420685,
       options: {
@@ -37,11 +37,39 @@ angular.module('starter.services', [])
         'Level of danger' : 'Imminent',
         'Updated' : '1 hours ago'
       }
+    },
+    inside1: {
+      lat: -7.7649758,
+      lng: 110.3736175,
+      options: {
+        'ReportType' : 'hotspot',
+        'Level of danger' : 'Imminent',
+        'Updated' : '1 hours ago'
+      }
+    },
+    inside2: {
+      lat: -7.7659758,
+      lng: 110.3746175,
+      options: {
+        'ReportType' : 'user',
+        'Source' : 'Twitter',
+        'Status' : '#gambutapi terdeteksi pada...',
+        'Updated' : '2 hours ago'
+      }
     }
   }
   return {
     getMarkers: function() {
       return sampleMarker
+    },
+    getMarkerInfo: function(markers) {
+      var result = []
+      for (i=0; i<markers.length; i++) {
+        var res = sampleMarker[markers[i]].options
+        res.id = markers[i]
+        result.push(res)
+      }
+      return (result)
     }
   }
 })

@@ -1,44 +1,44 @@
-<ion-view title="Settings" id="setting">
+<ion-view hide-nav-bar="true">
+  <ion-header-bar class="bar-dark">
+    <button class="button button-icon ion-ios-arrow-back button-close-radar" ng-click="backToMain()"></button>
+    <h1 class="title right">Setting</h1>
+  </ion-header-bar>
   <ion-content class="has-header">
+    <ul class="list">
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Theme
+        </div>
+        <select>
+          <option>Light</option>
+          <option selected>Dark</option>
+        </select>
+      </label>
 
-<ul class="list">
+      <li class="item item-toggle">
+         Automatic Reply
+         <label class="toggle toggle-positive">
+           <input type="checkbox" value="off">
+           <div class="track">
+             <div class="handle"></div>
+           </div>
+         </label>
+      </li>
 
-  <label class="item item-input item-select">
-    <div class="input-label">
-      Theme
-    </div>
-    <select>
-      <option>Light</option>
-      <option selected>Dark</option>
-    </select>
-  </label>
-
-  <li class="item item-toggle">
-     Automatic Reply
-     <label class="toggle toggle-positive">
-       <input type="checkbox" value="off">
-       <div class="track">
-         <div class="handle"></div>
-       </div>
-     </label>
-  </li>
-  
-  <label class="item item-input item-select">
-    <div class="input-label">
-      First day of the month
-    </div>
-    <select>
-      <option selected>Monday</option>
-      <option>Tuesday</option>
-	  <option>Wednesday</option>
-	  <option>Thursday</option>
-	  <option>Friday</option>
-	  <option>Saturday</option>
-	  <option>Sunday</option>
-    </select>
-  </label>
-
-</ul>
-
+      <label class="item item-input item-select">
+        <div class="input-label">
+          First day of the month
+        </div>
+        <select>
+          <option selected>Monday</option>
+          <option>Tuesday</option>
+    	  <option>Wednesday</option>
+    	  <option>Thursday</option>
+    	  <option>Friday</option>
+    	  <option>Saturday</option>
+    	  <option>Sunday</option>
+        </select>
+      </label>
+    </ul>
   </ion-content>
 </ion-view>

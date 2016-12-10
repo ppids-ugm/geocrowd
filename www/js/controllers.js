@@ -13,10 +13,18 @@ angular.module('starter.controllers', [])
   mapService
 ) {
   // Misc Function
+  $rootScope.stateRadar = false;
+  $scope.height= '100%';
   $scope.$on('$ionicView.beforeEnter', function() {
     $rootScope.hasFooter = true;
     $ionicHistory.clearHistory()
   });
+
+  $scope.radarHide = function() {
+    $rootScope.stateRadar = false;
+    $rootScope.hasFooter = true;
+    $rootScope.$broadcast('radar:closed');
+  }
 
   // Map definition
   var markers = mapService.getMarkers()
@@ -67,12 +75,19 @@ angular.module('starter.controllers', [])
       center: {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
-        zoom: 8
+        zoom: 12
       },
       markers: {
         myPos: {
           lat: position.coords.latitude,
-          lng: position.coords.longitude
+          lng: position.coords.longitude,
+          icon: {
+              iconUrl: './assets/pin.png',
+              color: '#00f',
+              iconSize: [38,50],
+              iconAnchor: [19, 50],
+              labelAnchor: [0, 8]
+            }
         }
       }
     })
@@ -109,8 +124,9 @@ angular.module('starter.controllers', [])
 
   // Radar event listener
   $scope.$on('radar:opened', function() {
+    $scope.height= '50%';
     var pos = $scope.markers.myPos
-    var bufferJson = radarService.createBuffer(pos, 10)
+    var bufferJson = radarService.createBuffer(pos, 0.5)
     angular.extend($scope, {
       geojson: {
         data: bufferJson,
@@ -124,9 +140,17 @@ angular.module('starter.controllers', [])
         }
       }
     })
-    var pointInside = radarService.getPointWithin($scope.markers, bufferJson)
-    console.log(pointInside)
+    var pointList = radarService.getPointWithin($scope.markers, bufferJson)
+    var pointListDesc = mapService.getMarkerInfo(pointList)
+    $scope.pointsInside = pointListDesc
   });
+
+  $scope.$on('radar:closed', function() {
+    $scope.height= '100%';
+    angular.extend($scope, {
+      geojson: {}
+    })
+  })
 })
 
 .controller('menuController', function(
@@ -137,21 +161,9 @@ angular.module('starter.controllers', [])
   $ionicPlatform
 ) {
   // Login modal
-  $ionicModal.fromTemplateUrl('/templates/login.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modalLogin = modal;
-  });
   $scope.loginShow = function() {
-    $scope.modalLogin.show();
+    $state.go('app.login')
   };
-  $scope.loginHide = function() {
-    $scope.modalLogin.hide();
-  };
-  $scope.$on('$destroy', function() {
-    $scope.modalLogin.remove();
-  });
 
   // Radar modal
   $scope.radarShow = function() {
@@ -161,41 +173,50 @@ angular.module('starter.controllers', [])
   }
 
   // Reporting modal
-  $ionicModal.fromTemplateUrl('/templates/reporting.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modalReport = modal;
-  });
   $scope.reportShow = function() {
-    $scope.modalReport.show();
+    $state.go('app.report');
   };
   $scope.reportHide = function() {
-    $scope.modalReport.hide();
+    $state.go('app.main');
   };
-  $scope.$on('$destroy', function() {
-    $scope.modalReport.remove();
-  });
 
   // navigate to setting view
   $scope.showSetting = function() {
     $state.go('app.setting')
   }
 })
-
+.controller('loginController', function(
+  $state,
+  $scope,
+  $rootScope
+) {
+  $rootScope.hasFooter = false
+  $scope.loginHide = function() {
+    $state.go('app.main')
+  };
+})
 .controller('radarController', function(
 ) {
 })
 
-.controller('settingController', function() {
-
+.controller('settingController', function(
+  $rootScope,
+  $state,
+  $scope
+) {
+  $rootScope.hasFooter = false
+  $scope.backToMain = function() {
+      $state.go('app.main')
+  }
 })
 
 .controller('reportController', function(
   $scope,
   $ionicPlatform,
-  $cordovaCamera
+  $cordovaCamera,
+  $rootScope
 ) {
+  $rootScope.hasFooter = false
   // navigate to camera view
   $scope.showCamera = function() {
       $ionicPlatform.ready(function () {

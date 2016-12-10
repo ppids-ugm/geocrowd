@@ -9,7 +9,6 @@ angular.module('starter', [
   'ionic',
   'starter.controllers',
   'starter.services',
-  'starter.directives',
   'leaflet-directive',
   'ngCordova'
 ])
@@ -58,15 +57,15 @@ angular.module('starter', [
       }
     }
   })
-  // .state('app.camera', {
-  //   url: '/camera',
-  //   views: {
-  //     'mainContainer': {
-  //       templateUrl: 'templates/camera.html',
-  //       controller: 'cameraController'
-  //     }
-  //   }
-  // })
+  .state('app.login', {
+    url: '/login',
+    views: {
+      'mainContainer': {
+        templateUrl: 'templates/login.html',
+        controller: 'loginController'
+      }
+    }
+  })
   .state('app.setting', {
     url: '/setting',
     views: {
@@ -76,15 +75,15 @@ angular.module('starter', [
       }
     }
   })
-  // .state('app.report', {
-  //   url: '/report',
-  //   views: {
-  //     'mainContainer': {
-  //       templateUrl: 'templates/reporting.html',
-  //       controller: 'reportController'
-  //     }
-  //   }
-  // })
+  .state('app.report', {
+    url: '/report',
+    views: {
+      'mainContainer': {
+        templateUrl: 'templates/reporting.html',
+        controller: 'reportController'
+      }
+    }
+  })
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/main');
 

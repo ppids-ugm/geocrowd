@@ -23,6 +23,9 @@ angular.module('starter.directives', [])
           show: '=',
         },
         controller: function ($scope, $rootScope) {
+          $rootScope.$watch(function() {return $scope.show}, function() {
+            console.log($scope.show)
+          })
           $scope.radarHide = function() {
             $rootScope.stateRadar = false;
             $rootScope.hasFooter = true;
