@@ -5,6 +5,8 @@ For testing purpose :
   4. ionic platform add ios (for mac user only)
   5. ionic run android
 
+OR download directly from here:
+
 
 Note:
 unfortunately, my beloved phone's RAM (Xiaomi redmi 2) can't handle running cordova application plus native camera application. Every time i touch a button that connected to cordova-camera-plugin, the main app is destroyed. So for the camera, i think i'll left it as is until i find alternative plugin
