@@ -6,7 +6,7 @@ For testing purpose :
   5. ionic run android
 
 OR download directly from here:
-
+https://github.com/ppids-ugm/geocrowd/blob/master/test/android-debug.apk?raw=true
 
 Note:
 unfortunately, my beloved phone's RAM (Xiaomi redmi 2) can't handle running cordova application plus native camera application. Every time i touch a button that connected to cordova-camera-plugin, the main app is destroyed. So for the camera, i think i'll left it as is until i find alternative plugin
