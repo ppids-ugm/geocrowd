@@ -198,3 +198,33 @@ angular.module('starter.services', [])
     }
   }
 })
+// .factory('compassService', function(
+//   $cordovaDeviceOrientation,
+//   $ionicPlatform
+// ) {
+//   var watch
+//   var orientation
+//   return {
+//     watch: function() {
+//       $ionicPlatform.ready(function() {
+//         var options = {
+//           frequency: 500
+//         }
+//
+//         watch = $cordovaDeviceOrientation.watchHeading(options).then(
+//           null,
+//           function(error) {
+//             console.log(error)
+//           },
+//           function(result) {   // updates constantly (depending on frequency value)
+//             orientation = result.trueHeading
+//             return orientation
+//           }
+//         )
+//       }, false)
+//     },
+//     clearWatch: function() {
+//       watch.clearWatch();
+//     }
+//   }
+// })

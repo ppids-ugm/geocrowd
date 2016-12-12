@@ -9,6 +9,7 @@ angular.module('starter', [
   'ionic',
   'starter.controllers',
   'starter.services',
+  'starter.directives',
   'leaflet-directive',
   'ngCordova'
 ])
@@ -81,6 +82,15 @@ angular.module('starter', [
       'mainContainer': {
         templateUrl: 'templates/reporting.html',
         controller: 'reportController'
+      }
+    }
+  })
+  .state('app.camera', {
+    url: '/camera',
+    views: {
+      'mainContainer': {
+        templateUrl: 'templates/camera.html',
+        controller: 'cameraController'
       }
     }
   })

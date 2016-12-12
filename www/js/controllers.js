@@ -70,7 +70,6 @@ angular.module('starter.controllers', [])
   //  GPS success
   var gpsSuccess = function(position) {
     $ionicLoading.hide()
-    console.log(position.coords.latitude, position.coords.longitude)
     angular.merge($scope, {
       center: {
         lat: position.coords.latitude,
@@ -126,7 +125,7 @@ angular.module('starter.controllers', [])
   $scope.$on('radar:opened', function() {
     $scope.height= '50%';
     var pos = $scope.markers.myPos
-    var bufferJson = radarService.createBuffer(pos, 0.5)
+    var bufferJson = radarService.createBuffer(pos, 3)
     angular.extend($scope, {
       geojson: {
         data: bufferJson,
@@ -184,6 +183,11 @@ angular.module('starter.controllers', [])
   $scope.showSetting = function() {
     $state.go('app.setting')
   }
+
+  // navigate to camera view
+  $scope.cameraShow = function() {
+    $state.go('app.camera')
+  }
 })
 .controller('loginController', function(
   $state,
@@ -218,19 +222,29 @@ angular.module('starter.controllers', [])
 ) {
   $rootScope.hasFooter = false
   // navigate to camera view
-  $scope.showCamera = function() {
-      $ionicPlatform.ready(function () {
-        var options = {
-          destinationType: Camera.DestinationType.FILE_URI,
-          sourceType: Camera.PictureSourceType.CAMERA,
-        };
-        $cordovaCamera.getPicture(options).then(function(imageURI) {
-          var image = document.getElementById('myImage');
-          image.src = imageURI;
-        }, function(err) {
-          // error
-        });
-        $cordovaCamera.cleanup()
-      }, false);
+  $scope.startCamera = function() {
+    $ionicPlatform.ready(function () {
+      var options = {
+        destinationType: Camera.DestinationType.FILE_URI,
+        sourceType: Camera.PictureSourceType.CAMERA,
+      };
+      $cordovaCamera.getPicture(options).then(function(imageURI) {
+        var image = document.getElementById('myImage');
+        image.src = imageURI;
+      }, function(err) {
+        // error
+      });
+      $cordovaCamera.cleanup()
+    }, false);
   }
+  //
+  // compassService.watch()
+  // console.log(angle)
+  // $scope.angle = angle
+})
+
+.controller('cameraController', function(
+  $scope
+) {
+
 })

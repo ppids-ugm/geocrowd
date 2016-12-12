@@ -3,11 +3,17 @@
     <h1 class="title">Report</h1>
     <button class="button button-icon ion-close button-close-radar" ng-click="reportHide()"></button>
   </ion-header-bar>
-  <ion-content scroll="false" padding="true" class="has-header" ng-controller="reportController">
-    <div>
-      <img src="img/panic.PNG" style="display: block; width: auto; height: auto; margin-left: auto; margin-right: auto;">
-    </div>
+  <ion-content scroll="false" padding="true" class="has-header">
     <div class="list report-list list-inset">
+      <ion-item class="item" id="pelaporan-input6">
+        <span class="input-label">Fire Direction</span>
+        <div class="compass-container">
+          <div class="compass-background">
+            <span class="vertical-center-helper"></span>
+            <img class="compass-arrow vertical-center" src="img/compass-arrow.png" compass-rotate/>
+          </div>
+        </div>
+      </ion-item>
       <label class="item item-input" id="pelaporan-input6">
         <span class="input-label">Incident</span>
         <input type="text" placeholder="Hint Text">
@@ -15,11 +21,18 @@
       <ion-item class="range range-dark" id="pelaporan-range1">Severity
         <input type="range" min="0" max="100">
       </ion-item>
-      <ion-item class="item-icon-left" id="pelaporan-list-item35" ng-click="showCamera()">
+      <ion-item class="item-icon-left" id="pelaporan-list-item35" ng-click="startCamera()">
         <i class="icon ion-android-camera"></i>Take Picture
       </ion-item>
-      <ion-checkbox class="checkbox checkbox-dark" class="pelaporan-checkbox1">Send using sms</ion-checkbox>
-      <button class="button-login-conf button button-dark">Report</button>
     </div>
+    <div class="list list-inset">
+      <div class="item">
+        <ion-checkbox class="checkbox checkbox-dark sms-checkbox vertical-center">
+          <span>Send using sms</span>
+        </ion-checkbox>
+        <button class="button-login-conf button button-dark">Report</button>
+      </div>
+    </div>
+    <button class="panic-button"></button>
   </ion-content>
 </ion-view>

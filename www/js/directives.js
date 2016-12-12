@@ -1,47 +1,31 @@
 angular.module('starter.directives', [])
-.directive('ionBottomSheet', [function() {
-    return {
-      restrict: 'E',
-      transclude: true,
-      replace: true,
-      controller: [function() {}],
-      template: '<div class="modal-wrapper" ng-transclude></div>'
-    };
-  }])
-.directive('ionBottomSheetView', function() {
+.directive('compassRotate', function (
+  $cordovaDeviceOrientation,
+  $ionicPlatform
+) {
   return {
-    restrict: 'E',
-    compile: function(element) {
-      element.addClass('bottom-sheet modal');
-    }
-  };
-})
-.directive('reportModal', function() {
-  return {
-        restrict: 'E',
-        scope: {
-          show: '=',
-        },
-        controller: function ($scope, $rootScope) {
-          $rootScope.$watch(function() {return $scope.show}, function() {
-            console.log($scope.show)
-          })
-          $scope.radarHide = function() {
-            $rootScope.stateRadar = false;
-            $rootScope.hasFooter = true;
-            $rootScope.$broadcast('radar:closed');
-          }
-        },
-        templateUrl: '/templates/radar-modal.html',
-        compile: function(element) {
-          element.css('position','absolute');
-          element.css('width','100%');
-          element.css('z-index','99999');
-          element.css('bottom','0');
-          element.css('min-height','initial');
-          element.css('top','initial');
-          element.css('height','50%');
-          element.css('overflow-y','auto');
+    scope: true,
+    restrict: 'A',
+    link: function (scope, element, attrs) {
+      $ionicPlatform.ready(function() {
+        var options = {
+          frequency: 200
         }
+
+        var watch = $cordovaDeviceOrientation.watchHeading(options).then(
+          null, function(error) {
+            console.log(error)
+          }, function(result) {
+            var r = 'rotate(' + -result.trueHeading + 'deg)';
+            element.css({
+              '-moz-transform': r,
+              '-webkit-transform': r,
+              '-o-transform': r,
+              '-ms-transform': r
+            });
+          }
+        );
+      })
     }
-})
+  }
+});
