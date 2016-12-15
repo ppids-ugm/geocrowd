@@ -85,12 +85,21 @@ angular.module('starter', [
       }
     }
   })
-  .state('app.camera', {
-    url: '/camera',
+  // .state('app.camera', {
+  //   url: '/camera',
+  //   views: {
+  //     'mainContainer': {
+  //       templateUrl: 'templates/camera.html',
+  //       controller: 'cameraController'
+  //     }
+  //   }
+  // })
+  .state('app.social', {
+    url: '/social',
     views: {
       'mainContainer': {
-        templateUrl: 'templates/camera.html',
-        controller: 'cameraController'
+        templateUrl: 'templates/social.html',
+        controller: 'socialController'
       }
     }
   })

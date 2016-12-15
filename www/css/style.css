@@ -130,7 +130,7 @@
   height: 100%;
 }
 
-.panic-button {
+/*.panic-button {
   position: fixed;
   border: none;
   border-radius: 50%;
@@ -142,7 +142,7 @@
   z-index: 99999999;
   right: 2em;
   bottom: 2em;
-}
+}*/
 
 .compass-container {
 }

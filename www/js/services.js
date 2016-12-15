@@ -198,33 +198,60 @@ angular.module('starter.services', [])
     }
   }
 })
-// .factory('compassService', function(
-//   $cordovaDeviceOrientation,
-//   $ionicPlatform
-// ) {
-//   var watch
-//   var orientation
-//   return {
-//     watch: function() {
-//       $ionicPlatform.ready(function() {
-//         var options = {
-//           frequency: 500
-//         }
-//
-//         watch = $cordovaDeviceOrientation.watchHeading(options).then(
-//           null,
-//           function(error) {
-//             console.log(error)
-//           },
-//           function(result) {   // updates constantly (depending on frequency value)
-//             orientation = result.trueHeading
-//             return orientation
-//           }
-//         )
-//       }, false)
-//     },
-//     clearWatch: function() {
-//       watch.clearWatch();
-//     }
-//   }
-// })
+.factory('cameraService', function(
+  $ionicPlatform,
+  $rootScope,
+  $q
+) {
+  var server = {isOnline : false}
+  var instance = {
+    getStatus: function () {
+      return server
+    },
+    startServer: function() {
+      var defer = $q.defer()
+      $ionicPlatform.ready(function() {
+        cordova.plugins.CameraServer.startServer({
+          'www_root' : '/',
+          'port' : 8080,
+          'localhost_only' : false,
+          'json_info': []
+        }, function(url){
+          console.log('startServer success')
+          server = {isOnline : true, url: url}
+          defer.resolve(server)
+          // instance.startCamera(url)
+        }, function(error){
+          defer.reject(error)
+        });
+      })
+      return defer.promise;
+    },
+    restartServer: function() {
+      console.log('restarting')
+      cordova.plugins.CameraServer.stopServer(instance.startServer(), function() {console.log('restart server error')})
+    },
+    stopServer: function() {
+      var defer = $q.defer()
+      cordova.plugins.CameraServer.stopServer(function() {
+        server = {isOnline : false, url: ''}
+        defer.resolve(server)
+      }, function() {
+        defer.reject(server)
+      })
+      return defer.promise
+    },
+    startCamera: function(url) {
+      var url = url
+      $ionicPlatform.ready(function() {
+        cordova.plugins.CameraServer.startCamera(function(){
+          $rootScope.$broadcast('camera:started', {url:url});
+          console.log('Capture Started');
+        },function( error ){
+          console.log('CameraServer StartCapture failed: ' + error);
+        });
+      })
+    }
+  }
+  return instance
+})

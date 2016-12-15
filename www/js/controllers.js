@@ -166,9 +166,17 @@ angular.module('starter.controllers', [])
 
   // Radar modal
   $scope.radarShow = function() {
-    $rootScope.hasFooter = false;
-    $rootScope.stateRadar = true;
-    $rootScope.$broadcast('radar:opened');
+    if($state.current.name != 'app.main') {
+      $state.go('app.main').then(function() {
+        $rootScope.hasFooter = false;
+        $rootScope.stateRadar = true;
+        $rootScope.$broadcast('radar:opened');
+      })
+    } else {
+      $rootScope.hasFooter = false;
+      $rootScope.stateRadar = true;
+      $rootScope.$broadcast('radar:opened');
+    }
   }
 
   // Reporting modal
@@ -185,8 +193,8 @@ angular.module('starter.controllers', [])
   }
 
   // navigate to camera view
-  $scope.cameraShow = function() {
-    $state.go('app.camera')
+  $scope.socialShow = function() {
+    $state.go('app.social')
   }
 })
 .controller('loginController', function(
@@ -215,6 +223,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('reportController', function(
+  $state,
   $scope,
   $ionicPlatform,
   $cordovaCamera,
@@ -225,26 +234,31 @@ angular.module('starter.controllers', [])
   $scope.startCamera = function() {
     $ionicPlatform.ready(function () {
       var options = {
-        destinationType: Camera.DestinationType.FILE_URI,
+        quality: 50,
+        destinationType: Camera.DestinationType.DATA_URL,
         sourceType: Camera.PictureSourceType.CAMERA,
+        allowEdit: true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 100,
+        targetHeight: 100,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false,
+        correctOrientation:true
       };
       $cordovaCamera.getPicture(options).then(function(imageURI) {
-        var image = document.getElementById('myImage');
-        image.src = imageURI;
+        console.log(imageURI);
+        $scope.previewPic = imageURI;
+        $scope.takePic = true;
       }, function(err) {
-        // error
+        console.log(err)
       });
-      $cordovaCamera.cleanup()
     }, false);
   }
-  //
-  // compassService.watch()
-  // console.log(angle)
-  // $scope.angle = angle
-})
 
-.controller('cameraController', function(
-  $scope
-) {
+  $scope.reportHide = function() {
+    $state.go('app.main')
+  }
+})
+.controller('socialController', function() {
 
 })
