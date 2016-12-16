@@ -1,21 +1,4 @@
 angular.module('starter.services', [])
-.factory('statusService', function() {
-  var currentStatus = {}
-  var instance = {
-    setTime: function() {
-      return Date.now()
-    },
-    set: function(key, val) {
-      var timestamp = instance.setTime()
-      var val = {'update' : timestamp, 'value': val}
-      currentStatus[key] = val
-    },
-    get: function(key) {
-      return currentStatus[key]
-    }
-  }
-  return instance
-})
 .factory('mapService', function() {
   var sampleMarker = {
     outside1: {
@@ -25,6 +8,13 @@ angular.module('starter.services', [])
         'reportType' : 'hotspot',
         'Level of danger' : 'Imminent',
         'Updated' : '6 hours ago'
+      },
+      icon: {
+        iconUrl: './img/hotU.png',
+        color: '#00f',
+        iconSize: [38,50],
+        iconAnchor: [19, 50],
+        labelAnchor: [0, 8]
       }
     },
     outside2: {
@@ -36,6 +26,13 @@ angular.module('starter.services', [])
         'Status' : '#gambutapi terdeteksi pada...',
         'Level of danger' : 'Imminent',
         'Updated' : '1 hours ago'
+      },
+      icon: {
+        iconUrl: './img/userRU.png',
+        color: '#00f',
+        iconSize: [38,50],
+        iconAnchor: [19, 50],
+        labelAnchor: [0, 8]
       }
     },
     inside1: {
@@ -45,6 +42,13 @@ angular.module('starter.services', [])
         'ReportType' : 'hotspot',
         'Level of danger' : 'Imminent',
         'Updated' : '1 hours ago'
+      },
+      icon: {
+        iconUrl: './img/hotU.png',
+        color: '#00f',
+        iconSize: [38,50],
+        iconAnchor: [19, 50],
+        labelAnchor: [0, 8]
       }
     },
     inside2: {
@@ -55,6 +59,81 @@ angular.module('starter.services', [])
         'Source' : 'Twitter',
         'Status' : '#gambutapi terdeteksi pada...',
         'Updated' : '2 hours ago'
+      },
+      icon: {
+        iconUrl: './img/userRU.png',
+        color: '#00f',
+        iconSize: [38,50],
+        iconAnchor: [19, 50],
+        labelAnchor: [0, 8]
+      }
+    },
+    kebakaran: {
+      lat: 1.148897,
+      lng: 102.408260,
+      options: {
+        'ReportType' : 'user',
+        'Source' : 'Twitter',
+        'Status' : '#gambutapi terdeteksi pada...',
+        'Updated' : '2 hours ago'
+      },
+      icon: {
+        iconUrl: './img/userRU.png',
+        color: '#00f',
+        iconSize: [38,50],
+        iconAnchor: [19, 50],
+        labelAnchor: [0, 8]
+      }
+    },
+    titik_api: {
+      lat: 1.137897,
+      lng: 102.407260,
+      options: {
+        'ReportType' : 'hotspot',
+        'Source' : 'Twitter',
+        'Status' : '#gambutapi terdeteksi pada...',
+        'Updated' : '2 hours ago'
+      },
+      icon: {
+        iconUrl: './img/hotU.png',
+        color: '#00f',
+        iconSize: [38,50],
+        iconAnchor: [19, 50],
+        labelAnchor: [0, 8]
+      }
+    },
+    sampel3: {
+      lat: 1.109897,
+      lng: 102.419260,
+      options: {
+        'ReportType' : 'user',
+        'Source' : 'Twitter',
+        'Status' : '#gambutapi terdeteksi pada...',
+        'Updated' : '2 hours ago'
+      },
+      icon: {
+        iconUrl: './img/userRU.png',
+        color: '#00f',
+        iconSize: [38,50],
+        iconAnchor: [19, 50],
+        labelAnchor: [0, 8]
+      }
+    },
+    sampel1: {
+      lat: 1.148897,
+      lng: 102.418260,
+      options: {
+        'ReportType' : 'user',
+        'Source' : 'Twitter',
+        'Status' : '#gambutapi terdeteksi pada...',
+        'Updated' : '2 hours ago'
+      },
+      icon: {
+        iconUrl: './img/userRU.png',
+        color: '#00f',
+        iconSize: [38,50],
+        iconAnchor: [19, 50],
+        labelAnchor: [0, 8]
       }
     }
   }
@@ -251,6 +330,22 @@ angular.module('starter.services', [])
           console.log('CameraServer StartCapture failed: ' + error);
         });
       })
+    }
+  }
+  return instance
+})
+.factory('statusService', function(
+  $window
+) {
+  var instance = {
+    isLoggedIn: function() {
+      return instance.getStatus('isLoggedIn')
+    },
+    setStatus: function(key, val) {
+      $window.localStorage[key] = val;
+    },
+    getStatus: function(key) {  
+      return $window.localStorage[key];
     }
   }
   return instance

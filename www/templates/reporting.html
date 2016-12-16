@@ -19,16 +19,23 @@
         <div class='col-33'>
           <hr />
         </div>
-        <div class='col-33' style='text-align:center;vertical-align:middle'>atau</div>
+        <div class='col-33' style='text-align:center;vertical-align:middle'>OR</div>
         <div class='col-33'>
           <hr />
         </div>
       </div>
       <button class="button button-block button-positive" ng-init='fullReport = false' ng-click='fullReport = !fullReport'>Full Report</button>
       <div ng-show='fullReport'>
-        <label class="item item-input" id="pelaporan-input6">
-          <span class="input-label">Incident</span>
-          <input type="text" placeholder="Hint Text">
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Incident
+          </div>
+          <select>
+            <option>Forest Fire</option>
+            <option>Canal Building</option>
+            <option>Ilegal Logging</option>
+            <option>Other..</option>
+          </select>
         </label>
         <ion-item class="range range-dark" id="pelaporan-range1">Severity
           <input type="range" min="0" max="100">

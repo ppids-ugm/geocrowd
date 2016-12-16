@@ -81,7 +81,7 @@ angular.module('starter.controllers', [])
           lat: position.coords.latitude,
           lng: position.coords.longitude,
           icon: {
-              iconUrl: './assets/pin.png',
+              iconUrl: './img/myPos.png',
               color: '#00f',
               iconSize: [38,50],
               iconAnchor: [19, 50],
@@ -157,11 +157,16 @@ angular.module('starter.controllers', [])
   $state,
   $ionicModal,
   $rootScope,
-  $ionicPlatform
+  $ionicPlatform,
+  statusService
 ) {
   // Login modal
   $scope.loginShow = function() {
-    $state.go('app.login')
+    if(statusService.isLoggedIn()=='true') {
+      $state.go('app.login')
+    } else {
+
+    }
   };
 
   // Radar modal
@@ -181,7 +186,12 @@ angular.module('starter.controllers', [])
 
   // Reporting modal
   $scope.reportShow = function() {
-    $state.go('app.report');
+    console.log(statusService.isLoggedIn())
+    if(statusService.isLoggedIn() == 'true') {
+      $state.go('app.report');
+    } else {
+      alert('You must login to access this feature!')
+    }
   };
   $scope.reportHide = function() {
     $state.go('app.main');
@@ -200,12 +210,18 @@ angular.module('starter.controllers', [])
 .controller('loginController', function(
   $state,
   $scope,
-  $rootScope
+  $rootScope,
+  statusService
 ) {
   $rootScope.hasFooter = false
   $scope.loginHide = function() {
     $state.go('app.main')
   };
+  $scope.login = function() {
+    // statusService.setStatus('isLoggedIn', true)
+    // $state.go('app.main')
+    alert('Error, your account is not exist in our database!')
+  }
 })
 .controller('radarController', function(
 ) {

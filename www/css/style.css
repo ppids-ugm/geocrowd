@@ -164,3 +164,8 @@
   width: 8em;
   height: 8em;
 }
+
+/*setting view*/
+.radar-range {
+  border: none;
+}

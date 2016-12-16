@@ -6,12 +6,12 @@
     <img class="login-logo" src="img/login_icon.svg"/>
     <div class="list list-inset input-account-container">
       <label class="item item-input">
-        <input type="email" placeholder="Alamat email">
+        <input type="email" placeholder="Alamat email" ng-model='account.email'>
       </label>
       <label class="item item-input">
-        <input type="password" placeholder="Password">
+        <input type="password" placeholder="Password" ng-model='account.pass'>
       </label>
-      <button class="item button button-login-conf">
+      <button class="item button button-login-conf" ng-click='login()'>
         Login
       </button>
     </div>
