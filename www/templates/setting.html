@@ -4,23 +4,26 @@
     <h1 class="title right">Setting</h1>
   </ion-header-bar>
   <ion-content class="has-header">
-    <div class='list'>
+    <div class='list list-inset'>
       <div class='item'>
         <div class="input-label">Radar Coverage</div>
         <div class="item range range-positive radar-range">
-          <input type="range" min="0" max="3000" value="1000" step='100' ng-model='radarRange'/><span>{{radarRange}} m</span>
+          <input type='range' min='0' max='3000' step='100' ng-model='setting.radarRange' ng-change='change()'/><span>{{setting.radarRange || 0}} m</span>
         </div>
       </div>
       <label class="item item-input item-select">
         <div class="input-label">
           Basemap
         </div>
-        <select>
+        <select ng-model='setting.basemap'>
           <option>mapbox-dark</option>
           <option>mapbox-light</option>
           <option>openstreetmap</option>
         </select>
       </label>
+      <button class="item button button-login-conf" ng-click='apply()'>
+        Apply
+      </button>
     </div>
   </ion-content>
 </ion-view>

@@ -1,5 +1,23 @@
 angular.module('starter.services', [])
 .factory('mapService', function() {
+  var baselayers = {
+    'mapbox-dark': {
+      name: 'Mapbox Dark',
+      url: 'https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2FtZW92ZXIiLCJhIjoicWFLdlBoYyJ9.EmU-s7wtfdTpVAX0SegFaw',
+      type: 'xyz',
+      layerOptions: {
+        showOnSelector: false
+      }
+    },
+    'openstreetmap': {
+      name: 'OpenStreetMap',
+      url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      type: 'xyz',
+      layerOptions: {
+        showOnSelector: false
+      }
+    }
+  }
   var sampleMarker = {
     outside1: {
       lat: -7.9752864,
@@ -138,6 +156,9 @@ angular.module('starter.services', [])
     }
   }
   return {
+    getLayers: function(key) {
+      return baselayers[key];
+    },
     getMarkers: function() {
       return sampleMarker
     },
@@ -344,9 +365,24 @@ angular.module('starter.services', [])
     setStatus: function(key, val) {
       $window.localStorage[key] = val;
     },
-    getStatus: function(key) {  
+    getStatus: function(key) {
       return $window.localStorage[key];
     }
   }
+  return instance
+})
+.factory('pengaturanService', function(
+  $window
+) {
+  var key = 'setting'
+  var instance = {
+    setSetting: function(val) {
+      $window.localStorage[key] = angular.toJson(val);
+    },
+    getSetting: function() {
+      return angular.fromJson($window.localStorage[key])
+    }
+  }
+
   return instance
 })

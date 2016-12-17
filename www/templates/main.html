@@ -2,12 +2,13 @@
   <ion-content class="landingContainer" scroll="false">
     <leaflet
       lf-center="center"
-      tiles="tiles"
+      layers="layers"
       height={{height}}
       width="100%"
       markers="markers"
       geojson="geojson"
-      defaults="defaults">
+      defaults="defaults"
+      ng-if='!hide'>
     </leaflet>
     <div class="radar-modal-container" ng-show="stateRadar">
       <ion-header-bar class="bar-dark radar-header">

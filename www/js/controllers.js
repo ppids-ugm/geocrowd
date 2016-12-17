@@ -10,9 +10,11 @@ angular.module('starter.controllers', [])
   $ionicPopup,
   networkService,
   radarService,
-  mapService
+  mapService,
+  pengaturanService
 ) {
   // Misc Function
+  var currentSetting = pengaturanService.getSetting()
   $rootScope.stateRadar = false;
   $scope.height= '100%';
   $scope.$on('$ionicView.beforeEnter', function() {
@@ -28,6 +30,22 @@ angular.module('starter.controllers', [])
 
   // Map definition
   var markers = mapService.getMarkers()
+  var baselayers = {}
+  baselayers[currentSetting.basemap] = mapService.getLayers(currentSetting.basemap)
+  // $rootScope.$on('map:changed', function() {
+  //   console.log(pengaturanService.getSetting().basemap)
+  //   baselayers[currentSetting.basemap] = mapService.getLayers(pengaturanService.getSetting().basemap)
+  // })
+  $scope.$on("$ionicView.beforeEnter", function(event, data){
+    if(pengaturanService.getSetting().basemap!=currentSetting.basemap) {
+      delete baselayers[currentSetting.basemap]
+      baselayers[pengaturanService.getSetting().basemap] = mapService.getLayers(pengaturanService.getSetting().basemap)
+      currentSetting.basemap = pengaturanService.getSetting().basemap
+      angular.extend($scope, {
+        baselayers : baselayers
+      })
+    }
+  });
   angular.extend($scope, {
     defaults: {
       zoomControl: false
@@ -39,12 +57,10 @@ angular.module('starter.controllers', [])
     },
     markers: markers,
     geojson: {},
-    tiles: {
-      url: 'https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2FtZW92ZXIiLCJhIjoicWFLdlBoYyJ9.EmU-s7wtfdTpVAX0SegFaw',
-      type: 'xyz'
+    layers: {
+      baselayers: baselayers
     }
   })
-
   // GPS Error Notif
   $scope.showGPSError = function(err) {
      var confirmPopup = $ionicPopup.confirm({
@@ -125,7 +141,7 @@ angular.module('starter.controllers', [])
   $scope.$on('radar:opened', function() {
     $scope.height= '50%';
     var pos = $scope.markers.myPos
-    var bufferJson = radarService.createBuffer(pos, 3)
+    var bufferJson = radarService.createBuffer(pos, pengaturanService.getSetting().radarRange/1000)
     angular.extend($scope, {
       geojson: {
         data: bufferJson,
@@ -230,11 +246,25 @@ angular.module('starter.controllers', [])
 .controller('settingController', function(
   $rootScope,
   $state,
-  $scope
+  $scope,
+  pengaturanService
 ) {
+  var savedSetting = pengaturanService.getSetting()
+  $scope.setting = {
+    radarRange: savedSetting.radarRange || 300,
+    basemap: savedSetting.basemap || mapbox-dark
+  }
   $rootScope.hasFooter = false
   $scope.backToMain = function() {
-      $state.go('app.main')
+    // if(savedSetting.basemap != pengaturanService.getSetting().basemap) {
+    //   $rootScope.$broadcast('map:changed')
+    // } else {
+    //   $rootScope.$broadcast('map:unchanged')
+    // }
+    $state.go('app.main')
+  }
+  $scope.apply = function() {
+    pengaturanService.setSetting($scope.setting)
   }
 })
 
