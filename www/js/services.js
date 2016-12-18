@@ -374,15 +374,41 @@ angular.module('starter.services', [])
 .factory('pengaturanService', function(
   $window
 ) {
-  var key = 'setting'
+  var key = 'setting';
+  var defaultSetting = {
+    basemap: 'mapbox-dark',
+    radarRange: 300
+  }
   var instance = {
     setSetting: function(val) {
       $window.localStorage[key] = angular.toJson(val);
     },
     getSetting: function() {
-      return angular.fromJson($window.localStorage[key])
+      return angular.fromJson($window.localStorage[key]) || defaultSetting
     }
   }
-
   return instance
+})
+.factory('userService', function() {
+  var user = {
+    email: 'dean@example.com',
+    pass: 'bismillah',
+    profil: {
+      ava: 'img/samplepic.jpg',
+      history: {
+        laporan1:{},
+        laporan2:{},
+        laporan3:{}
+      },
+      stat: {
+        report: 5,
+        verified: 4
+      }
+    }
+  }
+  return {
+    getUser: function() {
+      return user
+    }
+  }
 })

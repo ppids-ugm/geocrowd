@@ -6,7 +6,7 @@ For testing purpose :
   5. ionic run android
 
 OR download directly from here:
-https://github.com/ppids-ugm/geocrowd/blob/master/test/android-debug.apk?raw=true (last update 17/12/2016 @01:06 WIB)
+https://github.com/ppids-ugm/geocrowd/blob/master/test/android-debug.apk?raw=true (last update 18/12/2016 @15:03 WIB)
 
 If you face any bug or error, please submit it here
 https://ppids-ugm.github.io/geocrowd/

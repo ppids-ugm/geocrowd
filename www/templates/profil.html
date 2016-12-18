@@ -1,0 +1,67 @@
+<ion-view hide-nav-bar="true">
+  <ion-header-bar class="bar-dark">
+    <button class="button button-icon ion-ios-arrow-back button-close-radar" ng-click="backToMain()"></button>
+    <h1 class="title right">Profil</h1>
+  </ion-header-bar>
+  <ion-content class="has-header" scroll='false'>
+    <div class='ava-container'>
+      <img src='img/samplepic.jpg' width='100%' />
+    </div>
+    <div class='bar bar-dark'>
+      <div class='profile-bar-container'>
+        <span class='profile-name'>Dean Jhonson -
+          <span ng-if='carouselIndex==0'>Profile Page</span>
+          <span ng-if='carouselIndex==1'>Report History</span>
+          <span ng-if='carouselIndex==2'>Leaderboard</span>
+        </span>
+        <span class='statistic-container'>
+          <span class='statistic'><span class='icon ion-information-circled'></span> 5</span>
+          <span class='statistic'><span class='icon ion-checkmark-circled'></span> 4</span>
+        </span>
+      </div>
+    </div>
+    <ul rn-carousel rn-carousel-index="carouselIndex" rn-carousel-buffered class="has-header profil-carousel">
+      <li>
+        <div class='list list-inset'>
+          <div class='row item'>
+            <div class='attr col col-33'>Name</div><div class='val col'>: Dean Jhonson</div>
+          </div>
+          <div class='row item'>
+            <div class='attr col col-33'>Identity Number</div><div class='val col'>: 3524232904790001</div>
+          </div>
+          <div class='row item'>
+            <div class='attr col col-33'>Phone Number</div><div class='val col'>: 081328234567</div>
+          </div>
+        </div>
+        <div class='list list-inset'>
+          <button class='button button-block button-logout'>Logout</button>
+        </div>
+      </li>
+      <li>
+        <div class='list list-inset'>
+          <div class="item item-icon-right" href="#">
+            Laporan 1
+            <span class="icon ion-android-radio-button-off"></span>
+          </div>
+          <div class="item item-icon-right" href="#">
+            Laporan 2
+            <span class="icon ion-android-checkmark-circle"></span>
+          </div>
+          <div class="item item-icon-right" href="#">
+            Laporan 3
+            <span class="icon ion-android-checkmark-circle"></span>
+          </div>
+          <div class="item item-icon-right" href="#">
+            Laporan 4
+            <span class="icon ion-android-checkmark-circle"></span>
+          </div>
+          <div class="item item-icon-right" href="#">
+            Laporan 5
+            <span class="icon ion-android-checkmark-circle"></span>
+          </div>
+        </div>
+      </li>
+      <!-- <li>Leaderboard</li> -->
+    </ul>
+  </ion-content>
+</ion-view>

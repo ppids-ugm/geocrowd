@@ -32,10 +32,6 @@ angular.module('starter.controllers', [])
   var markers = mapService.getMarkers()
   var baselayers = {}
   baselayers[currentSetting.basemap] = mapService.getLayers(currentSetting.basemap)
-  // $rootScope.$on('map:changed', function() {
-  //   console.log(pengaturanService.getSetting().basemap)
-  //   baselayers[currentSetting.basemap] = mapService.getLayers(pengaturanService.getSetting().basemap)
-  // })
   $scope.$on("$ionicView.beforeEnter", function(event, data){
     if(pengaturanService.getSetting().basemap!=currentSetting.basemap) {
       delete baselayers[currentSetting.basemap]
@@ -185,6 +181,10 @@ angular.module('starter.controllers', [])
     }
   };
 
+  $scope.showProfil = function() {
+    $state.go('app.profil')
+  }
+
   // Radar modal
   $scope.radarShow = function() {
     if($state.current.name != 'app.main') {
@@ -307,4 +307,8 @@ angular.module('starter.controllers', [])
 })
 .controller('socialController', function() {
 
+})
+.controller('profilController', function(
+  $scope
+) {
 })

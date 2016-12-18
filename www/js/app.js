@@ -11,7 +11,8 @@ angular.module('starter', [
   'starter.services',
   'starter.directives',
   'leaflet-directive',
-  'ngCordova'
+  'ngCordova',
+  'angular-carousel'
 ])
 
 .run(function(
@@ -85,15 +86,15 @@ angular.module('starter', [
       }
     }
   })
-  // .state('app.camera', {
-  //   url: '/camera',
-  //   views: {
-  //     'mainContainer': {
-  //       templateUrl: 'templates/camera.html',
-  //       controller: 'cameraController'
-  //     }
-  //   }
-  // })
+  .state('app.profil', {
+    url: '/camera',
+    views: {
+      'mainContainer': {
+        templateUrl: 'templates/profil.html',
+        controller: 'profilController'
+      }
+    }
+  })
   .state('app.social', {
     url: '/social',
     views: {

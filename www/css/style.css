@@ -11,19 +11,19 @@
 }
 
 /*Header*/
-.login-icon-fix::before {
+.login-icon-fix:before {
   font-size: 1.25em !important;
 }
 
 .button-login {
   border: 0em;
 }
-.bar-dark .title, .bar-dark .button-icon::before {
+.bar-dark .title, .bar-dark .button-icon:before {
   color: #f57f17 !important;
 }
 
 /*Footer*/
-.icon-radar-fix::before {
+.icon-radar-fix:before {
   font-size: 1.45em !important;
   font-weight: bold !important;
 }
@@ -98,11 +98,11 @@
   top: 0px;
 }
 
-.button-close-radar::before {
+.button-close-radar:before {
   font-size: 1em !important;
 }
 
-.icon-report::before {
+.icon-report:before {
   color: orange;
 }
 
@@ -168,4 +168,59 @@
 /*setting view*/
 .radar-range {
   border: none;
+}
+
+/*Profil*/
+.ava-container {
+  padding: 0px;
+}
+
+.ava-container,.ava-container img {
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+.profile-name {
+  line-height: 45px;
+  vertical-align: middle;
+  padding-left: 1em;
+  font-size: 1.25em;
+}
+
+.profile-bar-container {
+  width: 100%;
+}
+
+.statistic-container {
+  width:6em;
+  float: right;
+  height: 100%;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 45px;
+}
+
+.statistic {
+  font-size: 1.25em;
+  vertical-align: middle;
+  padding-right: 0.5em;
+}
+
+.profil-carousel{
+  height: 100%;
+  width: 100%;
+}
+
+.attr {
+  font-weight: bold;
+}
+
+.button-logout {
+  background-color: #212121;
+  color: #f57f17;
+}
+
+.history-report-check {
+  float: right;
 }
