@@ -22,8 +22,8 @@
 .icon-radar-off:before{content:'\0042';}
 .icon-login:before{content:'\0043';}
 .icon-report:before{content:'\0044';}
-.icon-fire::before{content:url('/img/fire.svg')}
-.icon-capture::before{
+.icon-fire:before{content:url('/img/fire.svg')}
+.icon-capture:before{
   content:'';
   background-image: url('/img/capture.svg');
   background-size: 100% ;

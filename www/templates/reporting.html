@@ -6,53 +6,62 @@
   <ion-content scroll="true" padding="true" class="has-header">
     <div class="list list-inset">
       <ion-item class="item" id="pelaporan-input6">
-        <span class="input-label">Fire Direction</span>
+        <span class="input-label">Arah Insiden</span>
         <div class="compass-container">
           <div class="compass-background">
             <span class="vertical-center-helper"></span>
-            <img class="compass-arrow vertical-center" src="img/compass-arrow.png" compass-rotate/>
+            <img class="compass-arrow vertical-center" src="img/compass-arrow.png" compass-rotate='report.azimuth'/>
           </div>
         </div>
+        <center><span class='report-pos'>Lintang: {{report.pos.lat}} || Bujur: {{report.pos.lng}}</span></center>
       </ion-item>
-      <button class="button button-block button-assertive"><span class="icon ion-flame" style="padding-right: 1em"></span>Fire Panic Button</button>
+      <button class="button button-block button-assertive" ng-disabled='fullReport'>
+        <span class="icon ion-flame" style="padding-right: 1em"></span>Tombol Panik Kebakaran
+      </button>
       <div class='row'>
         <div class='col-33'>
           <hr />
         </div>
-        <div class='col-33' style='text-align:center;vertical-align:middle'>OR</div>
+        <div class='col-33' style='text-align:center;vertical-align:middle'>ATAU</div>
         <div class='col-33'>
           <hr />
         </div>
       </div>
-      <button class="button button-block button-positive" ng-init='fullReport = false' ng-click='fullReport = !fullReport'>Full Report</button>
-      <div ng-show='fullReport'>
+      <button class="button button-block button-positive" ng-init='fullReport = false' ng-click='fullReport = !fullReport'>Laporan Detil</button>
+      <div ng-show='fullReport' class='full-report-container'>
         <label class="item item-input item-select">
           <div class="input-label">
-            Incident
+            Insiden
           </div>
-          <select>
-            <option>Forest Fire</option>
-            <option>Canal Building</option>
-            <option>Ilegal Logging</option>
-            <option>Other..</option>
-          </select>
+          <select ng-model="report.incident" ng-options="opt as opt.label for opt in incident" ng-change='incidentUpdate()'></select>
         </label>
-        <ion-item class="range range-dark" id="pelaporan-range1">Severity
-          <input type="range" min="0" max="100">
+        <ion-item class="item item-input" ng-show='showAlt'>
+          <div>Insiden Lain</div>
+          <input ng-model="report.altIncident" type='text'></input>
         </ion-item>
-        <ion-item class="item-icon-left" id="pelaporan-list-item35" ng-click="startCamera()">
-          <i class="icon ion-android-camera"></i>Take Picture
+        <ion-item>
+          <div>Tingkat Kerusakan</div>
+          <rzslider rz-slider-model="report.tingkatKerusakan" rz-slider-options="slider.options"></rzslider>
         </ion-item>
-        <ion-item class="item" ng-show='takePic'>
-          <div>Preview Picture</div>
-          <img ng-src='data:image/jpg;base64,{{previewPic}}' width="100%" height="100%">
+        <ion-item class="item-icon-left" ng-click="startCamera()" ng-disabled='!online'>
+          <i class="icon ion-android-camera"></i><span class='take-pic-label'>Ambil Foto</span>
+        </ion-item>
+        <ion-item class="item" ng-show='takePic && online'>
+          <div>Pratinjau Foto</div>
+          <!-- <img id='prevPic' ng-src='data:image/jpg;base64,{{previewPic}}' width="100%" height="100%"> -->
+          <img id='prevPic' width="100%" height="100%">
+        </ion-item>
+        <ion-item class="item">
+          <div>Keterangan</div>
+          <textarea class='keterangan' maxlength="135" ng-model="report.keterangan" ng-trim="false"></textarea>
+          <span class='remaining-char'>{{report.keterangan.length || 0}}/135</span>
         </ion-item>
       <div class="list list-inset">
         <div class="item">
-          <ion-checkbox class="checkbox checkbox-dark sms-checkbox vertical-center">
-            <span>Send using sms</span>
+          <ion-checkbox class="checkbox checkbox-dark sms-checkbox vertical-center" ng-checked='report.isSms' ng-model='report.isSms' ng-disabled='true'>
+            <span>Kirim dengan SMS</span>
           </ion-checkbox>
-          <button class="button-login-conf button button-dark">Report</button>
+          <button class="button-login-conf button button-dark" ng-click='laporkan()'>Laporkan</button>
         </div>
       </div>
     </div>

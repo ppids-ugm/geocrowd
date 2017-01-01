@@ -16,7 +16,7 @@
         <button class="button button-icon ion-close button-close-radar" ng-click="radarHide()"></button>
       </ion-header-bar>
       <div class="list hotspot-list has-header">
-        <a class="item item-icon-left" href="#" ng-repeat="pointInside in pointsInside">
+        <a class="item item-icon-left" ng-repeat="pointInside in pointsInside" ui-sref="app.verify({rId: pointInside['rId']})">
           <span ng-class="{'icon icon-report' : (pointInside['ReportType'] == 'user') ? true: false, 'icon icon-fire': (pointInside['ReportType'] == 'hotspot') ? true: false}"></span>
           <table>
             <tr>

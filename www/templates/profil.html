@@ -5,11 +5,11 @@
   </ion-header-bar>
   <ion-content class="has-header" scroll='false'>
     <div class='ava-container'>
-      <img src='img/samplepic.jpg' width='100%' />
+      <img ng-src='{{user.foto}}' width='100%' />
     </div>
     <div class='bar bar-dark'>
       <div class='profile-bar-container'>
-        <span class='profile-name'>Dean Jhonson -
+        <span class='profile-name'>{{user.nama}} -
           <span ng-if='carouselIndex==0'>Profile Page</span>
           <span ng-if='carouselIndex==1'>Report History</span>
           <span ng-if='carouselIndex==2'>Leaderboard</span>
@@ -24,21 +24,21 @@
       <li>
         <div class='list list-inset'>
           <div class='row item'>
-            <div class='attr col col-33'>Name</div><div class='val col'>: Dean Jhonson</div>
+            <div class='attr col col-33'>Nama</div><div class='val col'>: {{user.nama}}</div>
           </div>
           <div class='row item'>
-            <div class='attr col col-33'>Identity Number</div><div class='val col'>: 3524232904790001</div>
+            <div class='attr col col-33'>Nomer Identitas</div><div class='val col'>: {{user.no_ktp}}</div>
           </div>
           <div class='row item'>
-            <div class='attr col col-33'>Phone Number</div><div class='val col'>: 081328234567</div>
+            <div class='attr col col-33'>Nomor Telepon</div><div class='val col'>: {{user.no_hp}}</div>
           </div>
         </div>
         <div class='list list-inset'>
-          <button class='button button-block button-logout'>Logout</button>
+          <button class='button button-block button-logout' ng-click='logout()'>Logout</button>
         </div>
       </li>
       <li>
-        <div class='list list-inset'>
+        <div class='list scrollable'>
           <div class="item item-icon-right" href="#">
             Laporan 1
             <span class="icon ion-android-radio-button-off"></span>
@@ -61,7 +61,54 @@
           </div>
         </div>
       </li>
-      <!-- <li>Leaderboard</li> -->
+      <li>
+        <div class='list scrollable'>
+          <a class="item item-avatar leaderboard-list" href="#">
+            <div class='star-container'>
+              <img src='img/gold-star.svg' class='leaderboard-star'>
+              <span class='leaderboard-star-rank'>1</span>
+            </div>
+            <div class='info-container'>
+              <h2>Venkman</h2>
+              <div>Total Report : </div>
+              <div>Verified Report : </div>
+            </div>
+          </a>
+          <a class="item item-avatar leaderboard-list" href="#">
+            <div class='star-container'>
+              <img src='img/silver-star.svg' class='leaderboard-star'>
+              <span class='leaderboard-star-rank'>2</span>
+            </div>
+            <div class='info-container'>
+              <h2>Venkman</h2>
+              <div>Total Report : </div>
+              <div>Verified Report : </div>
+            </div>
+          </a>
+          <a class="item item-avatar leaderboard-list" href="#">
+            <div class='star-container'>
+              <img src='img/bronze-star.svg' class='leaderboard-star'>
+              <span class='leaderboard-star-rank'>3</span>
+            </div>
+            <div class='info-container'>
+              <h2>Venkman</h2>
+              <div>Total Report : </div>
+              <div>Verified Report : </div>
+            </div>
+          </a>
+          <a class="item item-avatar leaderboard-list" href="#">
+            <div class='star-container'>
+              <img src='img/empty-star.svg' class='leaderboard-star'>
+              <span class='leaderboard-star-rank'>4</span>
+            </div>
+            <div class='info-container'>
+              <h2>Venkman</h2>
+              <div>Total Report : </div>
+              <div>Verified Report : </div>
+            </div>
+          </a>
+        </div>
+      </li>
     </ul>
   </ion-content>
 </ion-view>

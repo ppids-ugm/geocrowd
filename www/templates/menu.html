@@ -24,13 +24,19 @@
     </ion-footer-bar>
   </ion-side-menu-content>
   <ion-side-menu side="left">
-    <ion-header-bar class="bar-dark sidebar">
-    </ion-header-bar>
+    <ion-header-bar class="bar-dark sidebar"></ion-header-bar>
     <ion-content class="sidemenu-content">
-		    <ion-list id="menu-list12" data-componentid="list12">
-          <ion-item class="item-icon-left" id="menu-list-item25" menu-close ng-click="showSetting()">
-            <i class="icon ion-android-settings"></i>Settings
-          </ion-item>
+      <div class='list list-inset'>
+        <span class='title'>Pengaturan Tampilan Layer</span>
+        <ion-toggle ng-model="layer.satelit" toggle-class="toggle-calm">Titik Api (Satelit)</ion-toggle>
+        <ion-toggle ng-model="layer.laporan" toggle-class="toggle-calm">Titik Api (Laporan Pengguna)</ion-toggle>
+        <ion-toggle ng-model="layer.kanal" toggle-class="toggle-calm">Kanal</ion-toggle>
+        <ion-toggle ng-model="layer.jalan" toggle-class="toggle-calm">Jaringan Jalan</ion-toggle>
+      </div>
+		  <ion-list data-componentid="list12">
+        <ion-item class="item-icon-left" menu-close ng-click="showSetting()">
+          <i class="icon ion-android-settings"></i>Settings
+        </ion-item>
       </ion-list>
     </ion-content>
   </ion-side-menu>

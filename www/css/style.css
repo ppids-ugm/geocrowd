@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'arial-round';
+    src: url('../fonts/ARLRDBD.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* Misc */
 .vertical-center-helper {
   display: inline-block;
@@ -44,6 +51,13 @@
   color: #f57f17 !important;
 }
 
+/*Menu*/
+.sidemenu-content .title {
+  font-weight: bold;
+  font-size: 1.25em;
+  display: block;
+  padding-bottom: 1em;
+}
 
 /*Login Modal*/
 .login-modal {
@@ -130,23 +144,6 @@
   height: 100%;
 }
 
-/*.panic-button {
-  position: fixed;
-  border: none;
-  border-radius: 50%;
-  padding: 0px;
-  width: 5em;
-  height: 5em;
-  background: url('../img/panic-icon.png');
-  background-size: contain;
-  z-index: 99999999;
-  right: 2em;
-  bottom: 2em;
-}*/
-
-.compass-container {
-}
-
 .compass-background {
   display: block;
   margin: auto;
@@ -165,30 +162,58 @@
   height: 8em;
 }
 
+
+.keterangan {
+  border: solid 1px lightgray;
+  width: 100%;
+  height: 10em;
+}
+
+.take-pic-label {
+  float: right;
+}
+
+.rzslider .rz-pointer.rz-active:after {
+  background-color: white !important;
+}
+
+.remaining-char {
+  float: right;
+}
+
+.full-report-container:last-child {
+  margin-bottom: 20px;
+}
+
 /*setting view*/
 .radar-range {
   border: none;
 }
 
 /*Profil*/
+.scrollable {
+  overflow-y: scroll !important;
+  height: 50%;
+}
+
 .ava-container {
   padding: 0px;
 }
 
-.ava-container,.ava-container img {
+.ava-container, .ava-container img {
   margin: 0;
   padding: 0;
   display: block;
 }
 
-.profile-name {
-  line-height: 45px;
+.profile-name, .verify-name {
+  line-height: 50px;
   vertical-align: middle;
   padding-left: 1em;
   font-size: 1.25em;
 }
 
-.profile-bar-container {
+.profile-bar-container, .verify-bar-container {
   width: 100%;
 }
 
@@ -223,4 +248,60 @@
 
 .history-report-check {
   float: right;
+}
+
+.leaderboard-list {
+  padding-left: 1em;
+}
+
+.leaderboard-list img {
+  border-radius: 0px !important;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.leaderboard-list h2 {
+  font-weight: bold;
+}
+
+.star-container {
+  display: inline-block;
+  float: left;
+  height: 100%;
+}
+
+.leaderboard-star-rank {
+  font-family: 'arial-round';
+  font-size: 1.5em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: -55%;
+  color: white;
+}
+
+/*verify*/
+.verify-bar-container {
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+
+.verify-icon {
+  display: inline-block;
+  width: 45px;
+  height: 45px;
+  float: right;
+  margin-right: 2em;
+  border: solid 0.5em white;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.button-batal-verify {
+  width: 7em;
+  color: #f57f17 !important;
 }

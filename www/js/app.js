@@ -12,7 +12,8 @@ angular.module('starter', [
   'starter.directives',
   'leaflet-directive',
   'ngCordova',
-  'angular-carousel'
+  'angular-carousel',
+  'rzModule'
 ])
 
 .run(function(
@@ -101,6 +102,15 @@ angular.module('starter', [
       'mainContainer': {
         templateUrl: 'templates/social.html',
         controller: 'socialController'
+      }
+    }
+  })
+  .state('app.verify', {
+    url: '/verify/:rId',
+    views: {
+      'mainContainer': {
+        templateUrl: 'templates/verifikasi.html',
+        controller: 'verifyController'
       }
     }
   })

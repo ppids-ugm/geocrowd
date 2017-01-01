@@ -4,14 +4,14 @@ angular.module('starter.controllers', [])
   $rootScope,
   $ionicHistory,
   $cordovaNetwork,
-  positionService,
   $ionicPlatform,
   $ionicLoading,
   $ionicPopup,
   networkService,
   radarService,
   mapService,
-  pengaturanService
+  pengaturanService,
+  $cordovaGeolocation
 ) {
   // Misc Function
   var currentSetting = pengaturanService.getSetting()
@@ -66,7 +66,7 @@ angular.module('starter.controllers', [])
 
      confirmPopup.then(function(res) {
        if(res) {
-          positionService.getPosition(gpsSuccess, gpsFailed)
+          startGPS()
        } else {
          ionic.Platform.exitApp()
        }
@@ -82,6 +82,7 @@ angular.module('starter.controllers', [])
   //  GPS success
   var gpsSuccess = function(position) {
     $ionicLoading.hide()
+    $rootScope.$broadcast('gps:tracking', {lat:position.coords.latitude, lng:position.coords.longitude})
     angular.merge($scope, {
       center: {
         lat: position.coords.latitude,
@@ -112,24 +113,30 @@ angular.module('starter.controllers', [])
      });
    };
 
-  // Connected to internet
-  var isOnline = function() {
+   var watchOptions = {
+     timeout : 3000,
+     enableHighAccuracy: false // may cause errors if true
+   };
 
-  }
-
-  // Disconnected from internet
-  var isOffline = function() {
-    $scope.showDisconnected()
-  }
+   var startGPS =function() {
+     var watch = $cordovaGeolocation.watchPosition(watchOptions);
+     watch.then(
+       null,
+       function(err) {
+         gpsFailed(err)
+       },
+       function(position) {
+         $rootScope
+         gpsSuccess(position)
+     });
+   }
 
   // Main
   $ionicPlatform.ready(function() {
     $ionicLoading.show({
       template: 'Locking GPS Position...'
     }).then(function(){
-      positionService.getPosition(gpsSuccess, gpsFailed)
-    }).then(function() {
-      networkService.getOnlineStatus(isOnline, isOffline)
+      startGPS()
     })
   })
 
@@ -147,7 +154,7 @@ angular.module('starter.controllers', [])
           opacity: 1,
           color: 'white',
           dashArray: '3',
-          fillOpacity: 1
+          fillOpacity: 0.3
         }
       }
     })
@@ -170,20 +177,19 @@ angular.module('starter.controllers', [])
   $ionicModal,
   $rootScope,
   $ionicPlatform,
+  userService,
+  $cordovaToast,
   statusService
 ) {
   // Login modal
   $scope.loginShow = function() {
-    if(statusService.isLoggedIn()=='true') {
-      $state.go('app.login')
+    console.log(statusService.isLoggedIn())
+    if(statusService.isLoggedIn()==='true') {
+      $state.go('app.profil')
     } else {
-
+      $state.go('app.login')
     }
   };
-
-  $scope.showProfil = function() {
-    $state.go('app.profil')
-  }
 
   // Radar modal
   $scope.radarShow = function() {
@@ -206,7 +212,7 @@ angular.module('starter.controllers', [])
     if(statusService.isLoggedIn() == 'true') {
       $state.go('app.report');
     } else {
-      alert('You must login to access this feature!')
+      $cordovaToast.show('You must login to access this feature!', 'long', 'center')
     }
   };
   $scope.reportHide = function() {
@@ -227,17 +233,23 @@ angular.module('starter.controllers', [])
   $state,
   $scope,
   $rootScope,
-  statusService
+  $cordovaToast,
+  loginService
 ) {
   $rootScope.hasFooter = false
   $scope.loginHide = function() {
     $state.go('app.main')
   };
+  $scope.account = {}
   $scope.login = function() {
-    // statusService.setStatus('isLoggedIn', true)
-    // $state.go('app.main')
-    alert('Error, your account is not exist in our database!')
+    console.log(loginService.login($scope.account.email, $scope.account.pass))
   }
+  $rootScope.$on('login:success', function() {
+    $state.go('app.main')
+  })
+  $rootScope.$on('login:error', function(err) {
+    $cordovaToast.show('Error, '+err.error, 'long', 'center')
+  })
 })
 .controller('radarController', function(
 ) {
@@ -256,11 +268,6 @@ angular.module('starter.controllers', [])
   }
   $rootScope.hasFooter = false
   $scope.backToMain = function() {
-    // if(savedSetting.basemap != pengaturanService.getSetting().basemap) {
-    //   $rootScope.$broadcast('map:changed')
-    // } else {
-    //   $rootScope.$broadcast('map:unchanged')
-    // }
     $state.go('app.main')
   }
   $scope.apply = function() {
@@ -273,10 +280,156 @@ angular.module('starter.controllers', [])
   $scope,
   $ionicPlatform,
   $cordovaCamera,
-  $rootScope
+  $rootScope,
+  smsService,
+  uploadService
 ) {
   $rootScope.hasFooter = false
+  $scope.report = {
+    tingkatKerusakan: 6,
+    isSms: true,
+    pos: {
+      lat:'',
+      lng:''
+    }
+  }
+  $scope.incident = [
+    {id:1, label:'Kebakaran Hutan'},
+    {id:2, label:'Pembangunan Kanal'},
+    {id:3, label:'Penebangan Liar'},
+    {id:4, label:'Lainnya'}
+  ]
+  $rootScope.$on('gps:tracking', function(evt, args) {
+    $scope.report.pos.lat = args.lat
+    $scope.report.pos.lng = args.lng
+  })
+  $scope.report.incident = $scope.incident[0]
+  $scope.incidentUpdate = function() {
+    if($scope.report.incident.id == 4) {
+      $scope.showAlt = true
+    } else {
+      $scope.showAlt = false
+      $scope.report.altIncident = ''
+    }
+  }
   // navigate to camera view
+  $scope.startCamera = function() {
+    $ionicPlatform.ready(function () {
+      var options = {
+        quality: 50,
+        destinationType: Camera.DestinationType.NATIVE_URI,
+        sourceType: Camera.PictureSourceType.CAMERA,
+        allowEdit: true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 100,
+        targetHeight: 100,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false,
+        correctOrientation:true
+      };
+      $cordovaCamera.getPicture(options).then(function(imageURI) {
+        console.log(imageURI);
+        document.getElementById('prevPic').src = imageURI
+        $scope.takePic = true;
+        uploadService.upload(imageURI)
+      }, function(err) {
+        console.log(err)
+      });
+    }, false);
+  }
+
+  $scope.slider = {
+    options: {
+      floor: 0,
+      ceil: 12,
+      showSelectionBar: true,
+      getSelectionBarColor: function(value) {
+        if (value <= 3)
+          return 'lightgreen';
+        if (value <= 6)
+          return 'yellow';
+        if (value <= 9)
+          return 'orange';
+        return 'red';
+      },
+      getPointerColor: function(value) {
+        if (value <= 3)
+          return 'lightgreen';
+        if (value <= 6)
+          return 'yellow';
+        if (value <= 9)
+          return 'orange';
+        return 'red';
+      },
+      translate: function(value, sliderId, label) {
+        switch (label) {
+          case 'model':
+            if(value <= 3) {
+              return 'Tidak Parah'
+            } else if (value <= 6) {
+              return 'Parah'
+            } else {
+              return 'Sangat Parah'
+            }
+
+          default:
+            return ''
+        }
+      }
+    }
+  }
+
+  $scope.reportHide = function() {
+    $state.go('app.main')
+  }
+  $scope.online = true;
+  $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
+    console.log('offline');
+    $scope.report.isSms = true;
+    $scope.online = false;
+  })
+  $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
+    console.log('online');
+    $scope.online = true;
+  })
+
+  $scope.laporkan = function() {
+    if($scope.report.isSms) {
+      smsService.sendSms($scope.report)
+    }
+  }
+})
+
+.controller('socialController', function() {
+
+})
+
+.controller('profilController', function(
+  $rootScope,
+  userService,
+  $scope,
+  $state,
+  loginService
+) {
+  var user = userService.getUser()
+  $scope.user = user
+  $rootScope.hasFooter = false
+
+  $scope.logout = function() {
+    loginService.logout()
+    $state.go('app.main')
+  }
+})
+
+.controller('verifyController', function(
+  $scope,
+  $state,
+  $stateParams
+) {
+  $scope.verify = {}
+  $scope.backToMain = function() {
+    $state.go('app.main')
+  }
   $scope.startCamera = function() {
     $ionicPlatform.ready(function () {
       var options = {
@@ -293,22 +446,11 @@ angular.module('starter.controllers', [])
       };
       $cordovaCamera.getPicture(options).then(function(imageURI) {
         console.log(imageURI);
-        $scope.previewPic = imageURI;
-        $scope.takePic = true;
+        $scope.verify.previewPic = imageURI;
+        $scope.verify.takePic = true;
       }, function(err) {
         console.log(err)
       });
     }, false);
   }
-
-  $scope.reportHide = function() {
-    $state.go('app.main')
-  }
-})
-.controller('socialController', function() {
-
-})
-.controller('profilController', function(
-  $scope
-) {
 })

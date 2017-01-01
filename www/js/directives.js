@@ -4,7 +4,9 @@ angular.module('starter.directives', [])
   $ionicPlatform
 ) {
   return {
-    scope: true,
+    scope: {
+      azimuth: '=compassRotate'
+    },
     restrict: 'A',
     link: function (scope, element, attrs) {
       $ionicPlatform.ready(function() {
@@ -16,6 +18,7 @@ angular.module('starter.directives', [])
           null, function(error) {
             console.log(error)
           }, function(result) {
+            scope.azimuth = -result.trueHeading
             var r = 'rotate(' + -result.trueHeading + 'deg)';
             element.css({
               '-moz-transform': r,
